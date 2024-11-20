@@ -1,0 +1,44 @@
+---
+name: Release Chart
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  release:
+    permissions:
+      contents: write
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Login to GHCR.io
+        run: echo ${{ secrets.GITHUB_TOKEN }} | helm registry login --password-stdin --username ${{ github.actor }} ghcr.io
+
+      - name: Get tag name
+        run: echo "tag_name=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: Get dependencies
+        run: helm dependency build
+
+      - name: Package chart
+        run: helm package --version "$tag_name" .
+
+      - name: Push chart to GHCR
+        run: helm push *.tgz "oci://ghcr.io/${GITHUB_REPOSITORY,,}"  # ,, is to lower case which is required
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generateReleaseNotes: true

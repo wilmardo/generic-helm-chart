@@ -1,0 +1,238 @@
+# Default values for generic.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 2
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsGroup: 10000
+  runAsUser: 10000
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  # readOnlyRootFilesystem: true
+  seccompProfile:
+    type: RuntimeDefault
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+issuer:
+  enabled: false
+  email: ""
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+terminationGracePeriodSeconds: 30
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: {}
+  maxUnavailable: 1
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: |
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/instance
+            operator: In
+            values:
+            - {{ .Release.Name }}
+          - key: app.kubernetes.io/component
+            operator: In
+            values:
+            - service
+        topologyKey: kubernetes.io/hostname
+
+# ConfigMap with environment variables (no templating use the extraEnv for that)
+config: ""
+# config:
+#   APP_NAME: test
+
+networkPolicy:
+  enabled: false
+  ingress:
+    enabled: false
+    rules: {}
+      # example egress rules
+      # allow all traffic to all ports from the same namespace
+      # - from:
+      #   - podSelector: {}
+      # allow from pod in the same namespace for port 8080
+      # - ports:
+      #   - port: 8080
+      #   from:
+      #   - podSelector:
+      #       matchLabels:
+      #         app.kubernetes.io/instance: xyz
+      # allow from ingress-controller to port 8080
+      # - ports:
+      #   - port: 8080
+      #   from:
+      #   - namespaceSelector:
+      #       matchLabels:
+      #         kubernetes.io/metadata.name: ingress-nginx
+      #     podSelector:
+      #       matchLabels:
+      #         app.kubernetes.io/component: controller
+      #         app.kubernetes.io/instance: ingress-nginx
+      #         app.kubernetes.io/name: ingress-nginx
+  egress:
+    enabled: false
+    rules: {}
+    # example egress rules
+    # allow port 443 to all
+    #   - ports:
+    #     - port: 443
+    #       protocol: TCP
+    # allow to db server
+    #   - ports:
+    #     - port: 5432
+    #       protocol: TCP
+    #     to:
+    #     - ipBlock:
+    #         cidr: 10.0.0.1/24
+    # allow to another pod in the same namespace on port 8080
+    #   - ports:
+    #     - port: 8080
+    #       protocol: TCP
+    #     to:
+    #     - podSelector:
+    #         matchLabels:
+    #           app.kubernetes.io/instance: xyz
+
+
+# Additional environment variables
+extraEnv: ""
+# extraEnv: |
+#    - name: INFOPLAZA_USERNAME
+#     valueFrom:
+#       secretKeyRef:
+#         key: username
+#         name: infoplaza
+
+# Additional environment variables for Keycloak mapped from Secret or ConfigMap
+extraEnvFrom: ""
+
+extraObjects: []
+
+# Setup flux image automations
+fluxImagePolicy:
+  enabled: false
+  spec: {}
+  # spec:
+  #   filterTags:
+  #     # extract timestamp to sort hashes to determine latest from <commithash>-<RFC3339-TIMESTAMP>
+  #     pattern: '^RELEASE-(?P<timestamp>.*)Z$'
+  #     extract: '$timestamp'
+  #   policy:
+  #     alphabetical:
+  #       order: asc
+
+# Enable when Redis is needed
+redis:
+  enabled: false
+  architecture: standalone
+  master:
+    containerSecurityContext:
+      runAsNonRoot: true
+
+# Enable postgres when needed
+postgres:
+  enabled: false
+  architecture: standalone
+  # Set the tag when using this to avoid major upgrades
+  # https://hub.docker.com/r/bitnami/postgresql/tags
+  # image:
+  #   tag: 17.1.0-debian-12-r0

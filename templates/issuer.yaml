@@ -1,0 +1,23 @@
+{{- if and .Values.issuer.enabled (not .Values.ingress.enabled) }}
+{{- fail "issuer enabled without ingress, currently not supported" }}
+{{- end }}
+
+{{- if and .Values.issuer.enabled .Values.ingress.enabled -}}
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "generic.fullname" . }}
+  labels:
+    {{- include "generic.labels" . | nindent 4 }}
+spec:
+  acme:
+    email: {{ .Values.issuer.email }}
+    privateKeySecretRef:
+      name: {{ .Release.Name }}
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: "{{ .Values.ingress.className }}"
+{{- end }}

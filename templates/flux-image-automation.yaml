@@ -1,0 +1,24 @@
+{{- if .Values.fluxImagePolicy.enabled -}}
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: {{ include "generic.fullname" . }}
+  labels:
+    {{- include "generic.labels" . | nindent 4 }}
+spec:
+  provider: gcp
+  interval: 5m0s
+  image: "{{ .Values.image.repository }}"
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: {{ include "generic.fullname" . }}
+  labels:
+    {{- include "generic.labels" . | nindent 4 }}
+spec:
+  imageRepositoryRef:
+    name: {{ include "generic.fullname" . }}
+  {{- .Values.fluxImagePolicy.spec | toYaml | nindent 2 }}
+{{- end }}
