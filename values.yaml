@@ -46,6 +46,9 @@ securityContext:
     type: RuntimeDefault
 
 service:
+  # annotations:
+  #   metallb.universe.tf/loadBalancerIPs: 192.168.1.100
+  # annotations: {}
   type: ClusterIP
   port: 8080
 
@@ -105,7 +108,7 @@ podDisruptionBudget:
   maxUnavailable: 1
 
 persistence:
-  enabled: true
+  enabled: false
   mountPath: /data
   size: 10Gi
 
