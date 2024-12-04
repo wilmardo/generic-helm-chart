@@ -42,9 +42,9 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            {{- .Values.livenessProbe | default (dict "tcpSocket" (dict "port" "http")) | toYaml | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            {{- .Values.readinessProbe | default (dict "tcpSocket" (dict "port" "http")) | toYaml | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if (or .Values.volumeMounts .Values.persistence.enabled) }}

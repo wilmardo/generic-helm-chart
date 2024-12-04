@@ -84,14 +84,9 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
+# will both default to a tcpGet on the service port
+livenessProbe: {}
+readinessProbe: {}
 
 autoscaling:
   enabled: false
