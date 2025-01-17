@@ -75,7 +75,7 @@ spec:
         {{- with .Values.nodeSelector }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
-        {{ if .Values.persistence.enabled}}
+        {{- if .Values.persistence.enabled}}
         - name: pvc
           persistentVolumeClaim:
             claimName: {{ include "generic.fullname" . }}
