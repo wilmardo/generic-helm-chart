@@ -89,7 +89,7 @@ spec:
         {{- end }}
         {{- if ne .Values.config.mountPath "env" }}
         - name: configmap
-          configMapRef:
+          configMap:
             name: {{ include "generic.fullname" . }}
         {{- end }}
       {{- with .Values.nodeSelector }}
