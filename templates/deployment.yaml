@@ -47,18 +47,26 @@ spec:
             {{- .Values.readinessProbe | default (dict "tcpSocket" (dict "port" "http")) | toYaml | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- if (or .Values.volumeMounts .Values.persistence.enabled) }}
+          {{- if (or .Values.volumeMounts .Values.persistence.enabled (ne .Values.config.mountPath "env")) }}
           volumeMounts:
             {{- with .Values.volumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
+            {{- if .Values.persistence.enabled}}
             - mountPath: {{ .Values.persistence.mountPath }}
               name: pvc
+            {{- end }}
+            {{- if ne .Values.config.mountPath "env" }}
+            - mountPath: {{ .Values.config.mountPath }}
+              name: configmap
+            {{- end }}
           {{- end }}
           envFrom:
+            {{- if eq .Values.config.mountPath "env" }}
             - configMapRef:
                 name: {{ include "generic.fullname" . }}
                 optional: true
+            {{- end }}
             - secretRef:
                 name: {{ include "generic.fullname" . }}
                 optional: true
@@ -70,9 +78,8 @@ spec:
             {{- tpl . $ | nindent 12 }}
             {{- end }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
-      {{- if or .Values.volumes .Values.persistence.enabled }}
       volumes:
-        {{- with .Values.nodeSelector }}
+        {{- with .Values.volumeMounts }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
         {{- if .Values.persistence.enabled}}
@@ -80,7 +87,11 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "generic.fullname" . }}
         {{- end }}
-      {{- end }}
+        {{- if ne .Values.config.mountPath "env" }}
+        - name: configmap
+          configMapRef:
+            name: {{ include "generic.fullname" . }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

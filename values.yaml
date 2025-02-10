@@ -140,9 +140,27 @@ affinity: |
         topologyKey: kubernetes.io/hostname
 
 # ConfigMap with environment variables (no templating use the extraEnv for that)
-config: ""
 # config:
-#   APP_NAME: test
+#   mountPath: env
+#   data:
+#     ENV: prod
+#     DEBUG: true
+# # Also possible to mount as files
+config:
+  mountPath: /config
+  data:
+    game.properties: |
+      enemies=aliens
+      lives=3
+      enemies.cheat=true
+      enemies.cheat.level=noGoodRotten
+      secret.code.passphrase=UUDDLRLRBABAS
+      secret.code.allowed=true
+      secret.code.lives=30
+
+# config:
+#   mountPath: env
+#   data: {}
 
 networkPolicy:
   enabled: false
