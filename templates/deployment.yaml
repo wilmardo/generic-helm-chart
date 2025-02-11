@@ -47,7 +47,6 @@ spec:
             {{- .Values.readinessProbe | default (dict "tcpSocket" (dict "port" "http")) | toYaml | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- if (or .Values.volumeMounts .Values.persistence.enabled (ne .Values.config.mountPath "env")) }}
           volumeMounts:
             {{- with .Values.volumeMounts }}
               {{- toYaml . | nindent 12 }}
@@ -60,7 +59,6 @@ spec:
             - mountPath: {{ .Values.config.mountPath }}
               name: configmap
             {{- end }}
-          {{- end }}
           envFrom:
             {{- if eq .Values.config.mountPath "env" }}
             - configMapRef:
@@ -79,10 +77,10 @@ spec:
             {{- end }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       volumes:
-        {{- with .Values.volumeMounts }}
+        {{- with .Values.volumes }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
-        {{- if .Values.persistence.enabled}}
+        {{- if .Values.persistence.enabled }}
         - name: pvc
           persistentVolumeClaim:
             claimName: {{ include "generic.fullname" . }}
