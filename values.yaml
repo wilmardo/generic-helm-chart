@@ -51,6 +51,14 @@ service:
   # annotations: {}
   type: ClusterIP
   port: 8080
+  # extraPorts:
+  #   - port: 53
+  #     targetPort: 53
+  #     protocol: UDP
+  #   - port: 53
+  #     targetPort: 53
+  #     protocol: TCP
+  # extraPorts: []
 
 ingress:
   enabled: false
@@ -67,6 +75,35 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+httpRoute:
+  enabled: false
+  annotations: {}
+  parentRefs:
+    - name: gateway
+      sectionName: http
+  hostnames:
+    - chart-example.local
+  rules:
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /headers
+      filters:
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            set:
+            - name: My-Overwrite-Header
+              value: this-is-the-only-value
+            remove:
+            - User-Agent
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /echo
+          headers:
+            - name: version
+              value: v2
 
 issuer:
   enabled: false
