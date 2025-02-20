@@ -51,6 +51,14 @@ service:
   # annotations: {}
   type: ClusterIP
   port: 8080
+  # extraPorts:
+  #   - port: 53
+  #     targetPort: 53
+  #     protocol: UDP
+  #   - port: 53
+  #     targetPort: 53
+  #     protocol: TCP
+  # extraPorts: []
 
 ingress:
   enabled: false
