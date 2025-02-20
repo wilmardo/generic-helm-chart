@@ -9,7 +9,8 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - name: app
+      port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.port }}
       protocol: TCP
     {{- with .Values.service.extraPorts }}
