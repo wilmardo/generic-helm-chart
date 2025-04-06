@@ -278,6 +278,9 @@ redis:
 postgres:
   enabled: false
   architecture: standalone
+  # create the svcbind secret which contains the uri
+  serviceBindings:
+    enabled: true
   # Set the tag when using this to avoid major upgrades
   # https://hub.docker.com/r/bitnami/postgresql/tags
   # image:
