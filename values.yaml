@@ -32,14 +32,12 @@ podAnnotations: {}
 podLabels: {}
 
 podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
   runAsNonRoot: true
   runAsGroup: 1000
   runAsUser: 1000
-  fsGroup: 1000
-  seccompProfile:
-    type: RuntimeDefault
-
-securityContext:
   allowPrivilegeEscalation: false
   capabilities:
     drop:
