@@ -39,9 +39,9 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           livenessProbe:
-            {{- .Values.livenessProbe | default (dict "tcpSocket" (dict "port" "http")) | toYaml | nindent 12 }}
+            {{- .Values.livenessProbe | default (dict "tcpSocket" (dict "port" .Values.service.port)) | toYaml | nindent 12 }}
           readinessProbe:
-            {{- .Values.readinessProbe | default (dict "tcpSocket" (dict "port" "http")) | toYaml | nindent 12 }}
+            {{- .Values.readinessProbe | default (dict "tcpSocket" (dict "port" .Values.service.port)) | toYaml | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
