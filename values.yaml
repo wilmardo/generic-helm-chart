@@ -275,7 +275,7 @@ redis:
       runAsNonRoot: true
 
 # Enable postgres when needed
-postgres:
+postgresql:
   enabled: false
   architecture: standalone
   # create the svcbind secret which contains the uri
