@@ -4,7 +4,8 @@
 
 replicaCount: 1
 
-strategy: RollingUpdate
+strategy:
+  type: RollingUpdate
 
 image:
   repository: nginx
@@ -77,6 +78,19 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+httpRoute:
+  enabled: false
+  annotations: {}
+  parentRefs:
+    - name: gateway
+      sectionName: http
+  hostnames: []
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
 
 issuer:
   enabled: false

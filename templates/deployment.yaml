@@ -12,7 +12,7 @@ spec:
   selector:
     matchLabels:
       {{- include "generic.selectorLabels" . | nindent 6 }}
-  strategy: {{ .Values.strategy }}
+  strategy: {{ toYaml .Values.strategy | nindent 4 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
