@@ -59,10 +59,12 @@ service:
   type: ClusterIP
   port: 8080
   # extraPorts:
-  #   - port: 53
+  #   - name: dns-udp
+  #     port: 53
   #     targetPort: 53
   #     protocol: UDP
-  #   - port: 53
+  #   - name: dns-tcp
+  #     port: 53
   #     targetPort: 53
   #     protocol: TCP
   # extraPorts: []
