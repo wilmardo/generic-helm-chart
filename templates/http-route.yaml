@@ -33,6 +33,5 @@ spec:
       backendRefs:
         - name: {{ $fullName }}
           port: {{ $svcPort }}
-          weight: 1
     {{- end }}
 {{- end }}
