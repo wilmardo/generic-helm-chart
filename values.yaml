@@ -101,9 +101,9 @@ httpRoute:
 tcpRoute:
   enabled: false
   annotations: {}
+  # will be used for all ports below
   parentRefs:
-    - name: gateway
-      sectionName: tcp
+    name: gateway
   ports: []
 
 issuer:

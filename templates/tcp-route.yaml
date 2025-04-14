@@ -1,27 +1,22 @@
 ---
 {{- if .Values.tcpRoute.enabled -}}
 {{- $fullName := include "generic.fullname" . -}}
+{{- range .Values.tcpRoute.ports }}
 apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TCPRoute
 metadata:
-  name: {{ $fullName }}
+  name: {{ $fullName }}-{{ . }}
   labels:
-    {{- include "generic.labels" . | nindent 4 }}
-  {{- with .Values.tcpRoute.annotations }}
+    {{- include "generic.labels" $ | nindent 4 }}
+  {{- with $.Values.tcpRoute.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
   parentRefs:
-    {{- with .Values.tcpRoute.parentRefs }}
-      {{- toYaml . | nindent 4 }}
-    {{- end }}
-  {{- with .Values.tcpRoute.hostnames }}
-  hostnames:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    - name: {{ $.Values.tcpRoute.parentRefs.name }}
+      port: {{ . }}
   rules:
-    {{- range .Values.tcpRoute.ports }}
     - backendRefs:
       - name: {{ $fullName }}
         port: {{ . }}
