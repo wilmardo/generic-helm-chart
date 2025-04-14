@@ -98,6 +98,14 @@ httpRoute:
             type: PathPrefix
             value: /
 
+tcpRoute:
+  enabled: false
+  annotations: {}
+  parentRefs:
+    - name: gateway
+      sectionName: tcp
+  ports: []
+
 issuer:
   enabled: false
   email: ""
