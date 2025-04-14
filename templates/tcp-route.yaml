@@ -1,7 +1,7 @@
----
 {{- if .Values.tcpRoute.enabled -}}
 {{- $fullName := include "generic.fullname" . -}}
 {{- range .Values.tcpRoute.ports }}
+---
 apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TCPRoute
 metadata:
