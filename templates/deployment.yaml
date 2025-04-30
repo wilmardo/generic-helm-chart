@@ -36,7 +36,8 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image:
+            "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}" {{ printf "# {\"$imagepolicy\": \"%s:%s\"}" .Release.Namespace (include "generic.fullname" .) }}
           {{- with .Values.command }}
           command:
             {{- toYaml . | nindent 12 }}
