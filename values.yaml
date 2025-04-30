@@ -98,21 +98,27 @@ httpRoute:
             type: PathPrefix
             value: /
 
-tcpRoute:
-  enabled: false
-  annotations: {}
-  # will be used for all ports below
-  parentRefs:
-    name: gateway
-  ports: []
+# tcpRoute:
+#   8080:
+#     annotations: {}
+#     parentRefs:
+#       name: gateway
+#   8081:
+#     annotations: {}
+#     parentRefs:
+#       name: gateway
+tcpRoute: {}
 
-udpRoute:
-  enabled: false
-  annotations: {}
-  # will be used for all ports below
-  parentRefs:
-    name: gateway
-  ports: []
+# udpRoute:
+#   8080:
+#     annotations: {}
+#     parentRefs:
+#       name: gateway
+#   8081:
+#     annotations: {}
+#     parentRefs:
+#       name: gateway
+udpRoute: {}
 
 issuer:
   enabled: false
