@@ -3,7 +3,7 @@
 {{- range $port, $values := .Values.tcpRoute }}
 ---
 apiVersion: gateway.networking.k8s.io/v1alpha2
-kind: UDPRoute
+kind: TCPRoute
 metadata:
   name: {{ $fullName }}-{{ $port }}
   labels:
