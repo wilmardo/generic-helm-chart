@@ -15,6 +15,7 @@ metadata:
 spec:
   parentRefs:
     - name: {{ $values.parentRefs.name }}
+      namespace: {{ $values.parentRefs.namespace | default $.Release.Namespace }}
       port: {{ $port }}
   rules:
     - backendRefs:
