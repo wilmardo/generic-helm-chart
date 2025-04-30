@@ -1,0 +1,24 @@
+{{- if .Values.udpRoute.enabled -}}
+{{- $fullName := include "generic.fullname" . -}}
+{{- range .Values.udpRoute.ports }}
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: UDPRoute
+metadata:
+  name: {{ $fullName }}-{{ . }}
+  labels:
+    {{- include "generic.labels" $ | nindent 4 }}
+  {{- with $.Values.udpRoute.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+    - name: {{ $.Values.udpRoute.parentRefs.name }}
+      port: {{ . }}
+  rules:
+    - backendRefs:
+      - name: {{ $fullName }}
+        port: {{ . }}
+    {{- end }}
+{{- end }}

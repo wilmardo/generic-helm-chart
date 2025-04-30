@@ -106,6 +106,14 @@ tcpRoute:
     name: gateway
   ports: []
 
+udpRoute:
+  enabled: false
+  annotations: {}
+  # will be used for all ports below
+  parentRefs:
+    name: gateway
+  ports: []
+
 issuer:
   enabled: false
   email: ""
