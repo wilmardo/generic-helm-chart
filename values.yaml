@@ -294,6 +294,13 @@ fluxImagePolicy:
   #     alphabetical:
   #       order: asc
 
+# DNS related settings
+dnsPolicy: ClusterFirst
+dnsConfig: {}
+# dnsConfig:
+#   nameservers:
+#     - 9.9.9.9
+
 # Enable when Redis is needed
 redis:
   enabled: false
