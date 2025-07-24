@@ -301,6 +301,9 @@ dnsConfig: {}
 #   nameservers:
 #     - 9.9.9.9
 
+# Enable/disable k8s environment variable injection
+enableServiceLinks: true
+
 # Enable when Redis is needed
 redis:
   enabled: false
