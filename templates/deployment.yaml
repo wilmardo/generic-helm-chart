@@ -42,7 +42,7 @@ spec:
       {{- end }}
       enableServiceLinks: {{ .Values.enableServiceLinks }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Release.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image:
