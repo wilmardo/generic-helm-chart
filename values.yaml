@@ -39,6 +39,7 @@ podLabels: {}
 
 podSecurityContext:
   fsGroup: 1000
+  fsGroupChangePolicy: "OnRootMismatch"
 
 securityContext:
   runAsNonRoot: true
