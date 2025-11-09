@@ -201,6 +201,7 @@ affinity: |
 # # Also possible to mount as files
 # config:
 #   mountPath: /config
+#   defaultMode: "0777"
 #   data:
 #     game.properties: |
 #       enemies=aliens

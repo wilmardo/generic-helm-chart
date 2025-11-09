@@ -104,6 +104,7 @@ spec:
         - name: configmap
           configMap:
             name: {{ include "generic.fullname" . }}
+            defaultMode: {{ .Values.config.defaultMode }}
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
