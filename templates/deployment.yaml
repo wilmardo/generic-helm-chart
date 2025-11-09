@@ -57,7 +57,7 @@ spec:
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           livenessProbe:
-            {{- .Values.livenessProbe | default (dict "tcpSocket" (dict "port" .Values.service.port)) | toYaml | nindent 12 }}
+            {{- .Values.livenessProbe | default | toYaml | nindent 12 }}
           readinessProbe:
             {{- .Values.readinessProbe | default (dict "tcpSocket" (dict "port" .Values.service.port)) | toYaml | nindent 12 }}
           resources:
