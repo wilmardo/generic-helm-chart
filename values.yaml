@@ -282,6 +282,10 @@ extraEnv: ""
 extraEnvFrom: ""
 
 extraObjects: []
+# extraObjects:
+#   - |
+#     apiVersion: gateway.networking.k8s.io/v1
+#     kind: HTTPRoute
 
 # Setup flux image automations
 fluxImagePolicy:
