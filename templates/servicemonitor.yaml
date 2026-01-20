@@ -1,0 +1,22 @@
+{{- if and .Values.serviceMonitor.enabled (.Capabilities.APIVersions.Has "monitoring.coreos.com/v1/ServiceMonitor") -}}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "generic.fullname" . }}
+  labels:
+    {{- include "generic.labels" . | nindent 4 }}
+spec:
+  endpoints:
+    - interval: {{ .Values.serviceMonitor.interval }}
+      port: {{ .Values.serviceMonitor.port }}
+      scrapeTimeout: {{ .Values.serviceMonitor.timeout }}
+      path: {{ .Values.serviceMonitor.path }}
+  namespaceSelector:
+    matchNames:
+      - backups
+  jobLabel: {{ .Values.serviceMonitor.jobLabel }}
+  selector:
+    matchLabels:
+      {{- include "generic.selectorLabels" . | nindent 6 }}
+{{- end -}}

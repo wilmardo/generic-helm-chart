@@ -309,3 +309,11 @@ dnsConfig: {}
 
 # Enable/disable k8s environment variable injection
 enableServiceLinks: true
+
+serviceMonitor:
+  enabled: true
+  interval: 60s
+  timeout: 10s
+  path: /metrics
+  port: app
+  jobLabel: app.kubernetes.io/instance
