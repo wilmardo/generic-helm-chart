@@ -309,35 +309,3 @@ dnsConfig: {}
 
 # Enable/disable k8s environment variable injection
 enableServiceLinks: true
-
-# Enable when Redis is needed
-redis:
-  enabled: false
-  architecture: standalone
-  master:
-    containerSecurityContext:
-      runAsNonRoot: true
-
-# Enable postgres when needed
-postgresql:
-  enabled: false
-  architecture: standalone
-  # create the svcbind secret which contains the uri
-  serviceBindings:
-    enabled: true
-  # Set the tag when using this to avoid major upgrades
-  # https://hub.docker.com/r/bitnami/postgresql/tags
-  # image:
-  #   tag: 17.1.0-debian-12-r0
-
-# Enable mongodb when needed
-mongodb:
-  enabled: false
-  architecture: standalone
-  # create the svcbind secret which contains the uri
-  serviceBindings:
-    enabled: true
-  # Set the tag when using this to avoid major upgrades
-  # https://hub.docker.com/r/bitnami/mongodb/tags/
-  # image:
-  #   tag: 8.0.6-debian-12-r1
