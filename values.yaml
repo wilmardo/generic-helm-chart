@@ -311,7 +311,7 @@ dnsConfig: {}
 enableServiceLinks: true
 
 serviceMonitor:
-  enabled: true
+  enabled: false
   interval: 60s
   timeout: 10s
   path: /metrics
