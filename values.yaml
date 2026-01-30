@@ -177,20 +177,17 @@ nodeSelector: {}
 
 tolerations: []
 
-affinity: |
-  podAntiAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-          - key: app.kubernetes.io/instance
-            operator: In
-            values:
-            - {{ .Release.Name }}
-          - key: app.kubernetes.io/component
-            operator: In
-            values:
-            - service
-        topologyKey: kubernetes.io/hostname
+affinity: ""
+
+topologySpreadConstraints: |
+  - maxSkew: 0
+    topologyKey: topology.kubernetes.io/hostname
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    matchLabelKeys:
+      - pod-template-hash
 
 # ConfigMap with environment variables (no templating use the extraEnv for that)
 # config:
