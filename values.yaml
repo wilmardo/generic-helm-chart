@@ -180,7 +180,7 @@ tolerations: []
 affinity: ""
 
 topologySpreadConstraints: |
-  - maxSkew: 0
+  - maxSkew: 1
     topologyKey: topology.kubernetes.io/hostname
     whenUnsatisfiable: DoNotSchedule
     labelSelector:
